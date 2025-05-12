@@ -1,9 +1,13 @@
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 function Login() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: '',
     password: ''
@@ -15,15 +19,21 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Login form submitted:', form);
-    // İleride buraya API çağrısı gelecek
+
+    const fakeUser = {
+      name: 'Reis',
+      email: form.email
+    };
+
+    login(fakeUser);
+    navigate('/');
   };
 
   return (
     <section className="py-10 flex justify-center">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md bg-white p-6 rounded-xl shadow-2xl space-y-4"
+        className="w-full max-w-md bg-white p-6 rounded-xl shadow-xl space-y-4"
       >
         <h2 className="text-2xl font-bold text-blue-600 text-center">Login</h2>
 
@@ -46,11 +56,11 @@ function Login() {
         />
 
         <Button type="submit" className="w-full">
-          Giriş Yap
+          Login
         </Button>
 
         <p className="text-sm text-center text-gray-600">
-          Don't you have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link to="/register" className="text-blue-600 hover:underline">
             Register
           </Link>
