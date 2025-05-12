@@ -1,44 +1,41 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-
-// Dummy post list (aynı PostList'teki gibi)
-const dummyPosts = [
-  {
-    id: '1',
-    title: 'How to Start with React',
-    content: 'React is a powerful JavaScript library for building UIs. In this post, we explore the basics of JSX, components, and state.',
-    author: 'Enes Rptr',
-    date: 'May 11, 2025'
-  },
-  {
-    id: '2',
-    title: 'Understanding Tailwind CSS',
-    content: 'Tailwind CSS is a utility-first framework. This post covers how to build responsive UIs quickly using Tailwind.',
-    author: 'Jane Doe',
-    date: 'May 10, 2025'
-  },
-  {
-    id: '3',
-    title: 'Vite: The Fast Build Tool',
-    content: 'Vite offers fast refresh, optimized build times, and great DX. Learn how to create your project with it.',
-    author: 'Reis',
-    date: 'May 9, 2025'
-  }
-];
+import { usePosts } from '../../context/PostContext';
+import { useAuth } from '../../context/AuthContext';
+import Button from '../../components/Button';
 
 function PostDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { posts } = usePosts();
+  const { deletePost } = usePosts();
+  const { user } = useAuth();
 
-  const post = dummyPosts.find((p) => p.id === id);
+  const post = posts.find((p) => String(p.id) === String(id));
 
   useEffect(() => {
     if (!post) {
-      navigate('/'); // If post not found, go to home
+      navigate('/');
     }
   }, [post, navigate]);
 
-  if (!post) return null;
+  if (!post) {
+    return (
+      <section className="text-center py-20">
+        <p className="text-gray-500">Loading post...</p>
+      </section>
+    );
+  }
+
+  const isAuthor = user && user.name === post.author;
+
+  const handleDelete = () => {
+  const confirmDelete = window.confirm('Are you sure you want to delete this post?');
+  if (confirmDelete) {
+    deletePost(post.id);
+    navigate('/');
+  }
+};
 
   return (
     <section className="max-w-3xl mx-auto py-10 px-4 space-y-4">
@@ -46,7 +43,17 @@ function PostDetails() {
       <div className="text-sm text-gray-500">
         {post.author} • {post.date}
       </div>
-      <p className="text-gray-700 leading-relaxed mt-4">
+
+      {isAuthor && (
+        <div className="flex justify-end gap-4">
+          <Button onClick={() => navigate(`/posts/${post.id}/edit`)}>Edit Post</Button>
+          <Button onClick={handleDelete} className="bg-red-500 hover:bg-red-600">
+            Delete Post
+          </Button>
+        </div>
+      )}
+
+      <p className="text-gray-700 leading-relaxed mt-4 whitespace-pre-line">
         {post.content}
       </p>
     </section>

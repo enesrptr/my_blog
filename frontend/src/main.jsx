@@ -2,12 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './styles.css';
-import { AuthProvider } from './context/AuthContext.jsx';
+import { AuthProvider } from './context/AuthContext';
+import { PostProvider } from './context/PostContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthProvider>
+  <AuthProvider>
+    <PostProvider>
       <App />
-    </AuthProvider>
-  </React.StrictMode>
+    </PostProvider>
+  </AuthProvider>
+</React.StrictMode>
 );

@@ -9,6 +9,8 @@ import Register from '../features/auth/Register';
 import PostList from '../features/posts/PostList';
 import NewPost from '../features/posts/NewPost';
 import ProtectedRoute from './ProtectedRoute';
+import PostDetails from '../features/posts/PostDetails';
+import EditPost from '../features/posts/EditPost';
 
 function AppRouter() {
   return (
@@ -19,12 +21,22 @@ function AppRouter() {
           <Route index element={<PostList />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="posts/:id" element={<PostDetails />} /> {/* 👈 burada olmalı */}
         </Route>
 
         {/* Auth routes - can be public */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
+        <Route
+          path="/posts/:id/edit"
+          element={
+            <ProtectedRoute>
+              <EditPost />
+            </ProtectedRoute>
+          }
+        />
+        
         <Route
           path="/posts/new"
           element={
@@ -33,6 +45,7 @@ function AppRouter() {
             </ProtectedRoute>
           }
         />
+
 
         {/* Catch all - 404 */}
         <Route path="*" element={<NotFound />} />

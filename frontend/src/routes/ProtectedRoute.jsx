@@ -2,14 +2,14 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 function ProtectedRoute({ children }) {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) return null; // veya bir spinner gösterebilirsin
 
   if (!user) {
-    // If not authenticated → redirect to login
     return <Navigate to="/login" replace />;
   }
 
-  // If authenticated → allow access
   return children;
 }
 

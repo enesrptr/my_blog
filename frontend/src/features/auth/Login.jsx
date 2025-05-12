@@ -18,15 +18,15 @@ function Login() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const fakeUser = {
-      name: 'Reis',
-      email: form.email
-    };
+  const fakeUser = {
+    name: 'Reis',
+    email: form.email
+  };
 
-    login(fakeUser);
-    navigate('/');
+  login(fakeUser);
+  navigate('/');
   };
 
   return (
