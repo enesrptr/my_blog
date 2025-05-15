@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Posts
+from .models import Post
 from .serializers import PostSerializer
 from rest_framework import status
 
@@ -9,7 +9,7 @@ from rest_framework import status
 @api_view(['GET','POST'])
 def postList(request):
     if request.method == "GET":
-        posts = Posts.objects.all()
+        posts = Post.objects.all()
         serializer = PostSerializer(posts,many=True)
         return Response(serializer.data)
 
@@ -24,8 +24,8 @@ def postList(request):
 @api_view(['GET','POST','DELETE'])
 def postDetail(request, id):
     try:
-        post = Posts.objects.get(pk=id)
-    except Posts.DoesNotExist:
+        post = Post.objects.get(pk=id)
+    except Post.DoesNotExist:
         return Response({"error":"No matching record found."},status = status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
@@ -33,7 +33,7 @@ def postDetail(request, id):
         return Response(serializer.data)
     
     if request.method == "PUT":
-        post = Posts.objects.get(pk=id)
+        post = Post.objects.get(pk=id)
         serializer = PostSerializer(post, data = request.data)
 
         if serializer.is_valid():
