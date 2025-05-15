@@ -11,6 +11,7 @@ import NewPost from '../features/posts/NewPost';
 import ProtectedRoute from './ProtectedRoute';
 import PostDetails from '../features/posts/PostDetails';
 import EditPost from '../features/posts/EditPost';
+import MyPosts from '../features/posts/MyPosts';
 
 function AppRouter() {
   return (
@@ -42,6 +43,15 @@ function AppRouter() {
           element={
             <ProtectedRoute>
               <NewPost />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/myposts"
+          element={
+            <ProtectedRoute>
+              <MyPosts />
             </ProtectedRoute>
           }
         />

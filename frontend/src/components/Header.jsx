@@ -39,15 +39,12 @@ function Header() {
 
           {user ? (
             <>
-              <div className="flex gap-4 items-center">
-                <Link to="/posts/new" className="text-white hover:underline">
-                  New Post
-                </Link>
-                <span className="text-sm text-white">Hi, {user.name}</span>
-                <button onClick={handleLogout} className="hover:text-red-300 text-sm">
-                  Logout
-                </button>
-              </div>
+              <Link to="/posts/new" className="hover:text-blue-200">New Post</Link>
+              <Link to="/myposts" className="hover:text-blue-200">My Posts</Link>
+              <span className="text-sm text-white">Hi, {user.name}</span>
+              <button onClick={handleLogout} className="hover:text-red-300 text-sm">
+                Logout
+              </button>
             </>
           ) : (
             <>
@@ -56,6 +53,7 @@ function Header() {
             </>
           )}
         </nav>
+
       </div>
     </header>
   );
