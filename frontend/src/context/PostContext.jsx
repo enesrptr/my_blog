@@ -7,7 +7,7 @@ const API_BASE = 'http://localhost:8000/api/posts/';
 export function PostProvider({ children }) {
   const [posts, setPosts] = useState([]);
 
-  // Verileri API'den çek
+  
   const fetchPosts = async () => {
     try {
       const res = await axios.get(API_BASE);
@@ -21,7 +21,7 @@ export function PostProvider({ children }) {
     fetchPosts();
   }, []);
 
-  // Yeni post ekle
+  
   const addPost = async (newPost) => {
     try {
       const res = await axios.post(API_BASE, newPost);
@@ -31,7 +31,7 @@ export function PostProvider({ children }) {
     }
   };
 
-  // Post güncelle
+  
   const updatePost = async (updatedPost) => {
     try {
       const res = await axios.put(`${API_BASE}${updatedPost.id}/`, updatedPost);
@@ -43,7 +43,7 @@ export function PostProvider({ children }) {
     }
   };
 
-  // Post sil
+  
   const deletePost = async (id) => {
     try {
       await axios.delete(`${API_BASE}${id}/`);

@@ -21,7 +21,7 @@ def postList(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET','POST','DELETE'])
+@api_view(['GET','PUT','DELETE'])
 def postDetail(request, id):
     try:
         post = Post.objects.get(pk=id)
@@ -42,7 +42,7 @@ def postDetail(request, id):
         return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
     
     if request.method == "DELETE":
-        post = Posts.objects.get(pk=id)
+        post = Post.objects.get(pk=id)
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

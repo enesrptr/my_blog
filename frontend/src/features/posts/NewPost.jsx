@@ -22,18 +22,16 @@ function NewPost() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newPost = {
-      id: crypto.randomUUID(), // benzersiz id
       title: form.title,
       content: form.content,
-      author: user.name,
-      date: new Date().toLocaleDateString()
+      author: user.name
     };
 
-    addPost(newPost);
+    await addPost(newPost);
     navigate('/');
   };
 

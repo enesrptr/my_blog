@@ -29,10 +29,10 @@ function PostDetails() {
 
   const isAuthor = user && user.name === post.author;
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
   const confirmDelete = window.confirm('Are you sure you want to delete this post?');
   if (confirmDelete) {
-    deletePost(post.id);
+    await deletePost(id);
     navigate('/');
   }
 };
@@ -47,7 +47,7 @@ function PostDetails() {
       {isAuthor && (
         <div className="flex justify-end gap-4">
           <Button onClick={() => navigate(`/posts/${post.id}/edit`)}>Edit Post</Button>
-          <Button onClick={handleDelete} className="bg-red-500 hover:bg-red-600">
+          <Button onClick={handleDelete} className="bg-red-500 hover:bg-red-600 text-white">
             Delete Post
           </Button>
         </div>
