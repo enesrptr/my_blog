@@ -5,15 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import BlogCard from '../../components/BlogCard';
 
 function MyPosts() {
-  const { posts } = usePosts();
+  const { posts , fetchPosts} = usePosts();
   const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) {
       navigate('/login');
+    } else{
+      fetchPosts();
     }
-  }, [user, navigate]);
+  }, [user, navigate, fetchPosts]);
 
   const myPosts = posts.filter((post) => post.author === user?.name);
 

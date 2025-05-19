@@ -37,11 +37,11 @@ function EditPost() {
     e.preventDefault();
 
     const updatedPost = {
-  id: parseInt(id),
-  title: form.title,
-  content: form.content,
-  author: user.name 
-};
+      id: parseInt(id),
+      title: form.title,
+      content: form.content,
+      author: user.name 
+    };
 
     await updatePost(updatedPost);
     navigate(`/posts/${id}`);
