@@ -22,7 +22,7 @@ function AppRouter() {
           <Route index element={<PostList />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="posts/:id" element={<PostDetails />} /> {/* 👈 burada olmalı */}
+          <Route path="posts/:id" element={<PostDetails />} /> 
         </Route>
 
         {/* Auth routes - can be public */}
