@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Post
-from .serializers import PostSerializer
+from .models import Post,Category
+from .serializers import PostSerializer,CategorySerializer
 from rest_framework import status
 
 
@@ -16,8 +16,10 @@ def postList(request):
     if request.method == "POST":
         serializer = PostSerializer(data = request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status= status.HTTP_201_CREATED)
+            post = serializer.save()
+            if 'category_ids' in request.data:
+                post.categories.set(request.data['category_ids'])  
+            return Response(PostSerializer(post).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -33,16 +35,23 @@ def postDetail(request, id):
         return Response(serializer.data)
     
     if request.method == "PUT":
-        post = Post.objects.get(pk=id)
-        serializer = PostSerializer(post, data = request.data)
+        serializer = PostSerializer(post, data=request.data)
 
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status= status.HTTP_201_CREATED)
+            post = serializer.save()
+            if 'category_ids' in request.data:
+                post.categories.set(request.data['category_ids'])
+            return Response(PostSerializer(post).data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
     
     if request.method == "DELETE":
         post = Post.objects.get(pk=id)
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+@api_view(['GET'])
+def categoryList(request):
+    categories = Category.objects.all()
+    serializer = CategorySerializer(categories, many=True)
+    return Response(serializer.data)
 

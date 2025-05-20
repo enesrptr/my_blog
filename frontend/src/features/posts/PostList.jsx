@@ -22,8 +22,11 @@ function PostList() {
       .catch((err) => console.error("Category fetch error:", err));
   }, []);
 
+  // Postları kategoriye göre filtrele
   const filteredPosts = selectedCategory
-    ? posts.filter((post) => post.category?.id === parseInt(selectedCategory))
+    ? posts.filter((post) =>
+        post.categories.some((cat) => cat.id === parseInt(selectedCategory))
+      )
     : posts;
 
   return (
@@ -43,7 +46,6 @@ function PostList() {
         </select>
       </div>
 
-      {/* Postlar */}
       {filteredPosts.length === 0 ? (
         <p className="text-gray-500">No posts found.</p>
       ) : (

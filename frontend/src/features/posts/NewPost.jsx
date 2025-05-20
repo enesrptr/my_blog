@@ -1,24 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { usePosts } from '../../context/PostContext';
 import { useAuth } from '../../context/AuthContext';
+import axios from 'axios';
 
 function NewPost() {
   const [form, setForm] = useState({
     title: '',
-    content: ''
+    content: '',
+    category_ids: []  // ✅ kategori id'leri burada tutulacak
   });
+
+  const [categories, setCategories] = useState([]);
 
   const navigate = useNavigate();
   const { addPost } = usePosts();
   const { user } = useAuth();
 
+  // Kategorileri backend'den çek
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/categories/')
+      .then(res => setCategories(res.data))
+      .catch(err => console.error('Kategori verisi alınamadı:', err));
+  }, []);
+
   const handleChange = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value
+    });
+  };
+
+  const handleCategoryChange = (e) => {
+    const selected = Array.from(e.target.selectedOptions).map(opt => parseInt(opt.value));
+    setForm({
+      ...form,
+      category_ids: selected
     });
   };
 
@@ -28,7 +47,8 @@ function NewPost() {
     const newPost = {
       title: form.title,
       content: form.content,
-      author: user.name
+      author: user.name,
+      category_ids: form.category_ids  // ✅ kategori id'lerini gönder
     };
 
     await addPost(newPost);
@@ -64,6 +84,29 @@ function NewPost() {
             placeholder="Write your blog content here..."
             className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
+        </div>
+
+        {/* ✅ Kategori seçimi */}
+        <div className="flex flex-col gap-1">
+          <label htmlFor="categories" className="text-sm font-medium text-gray-700">
+            Categories
+          </label>
+          <select
+            multiple
+            id="categories"
+            value={form.category_ids}
+            onChange={handleCategoryChange}
+            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            {categories.map(cat => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-gray-500 mt-1">
+            You can select more than once with CTRL.
+          </p>
         </div>
 
         <Button type="submit" className="w-full">
